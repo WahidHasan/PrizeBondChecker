@@ -39,16 +39,16 @@ namespace Infrastructure
 
             services.AddHttpContextAccessor();
             // Identity services
-            services.TryAddScoped<IUserValidator<ApplicationUser>, UserValidator<ApplicationUser>>();
-            services.TryAddScoped<IPasswordValidator<ApplicationUser>, PasswordValidator<ApplicationUser>>();
-            services.TryAddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
-            services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
-            services.TryAddScoped<IRoleValidator<ApplicationRole>, RoleValidator<ApplicationRole>>();
+            //services.TryAddScoped<IUserValidator<ApplicationUser>, UserValidator<ApplicationUser>>();
+            //services.TryAddScoped<IPasswordValidator<ApplicationUser>, PasswordValidator<ApplicationUser>>();
+            //services.TryAddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
+            //services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
+            //services.TryAddScoped<IRoleValidator<ApplicationRole>, RoleValidator<ApplicationRole>>();
 
-            services.TryAddScoped<IdentityErrorDescriber>();
-            services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<ApplicationUser>>();
-            services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<ApplicationUser>>();
-            services.TryAddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser, ApplicationRole>>();
+            //services.TryAddScoped<IdentityErrorDescriber>();
+            //services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<ApplicationUser>>();
+            //services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<ApplicationUser>>();
+            //services.TryAddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser, ApplicationRole>>();
 
             services.TryAddScoped<UserManager<ApplicationUser>>();
             services.TryAddScoped<SignInManager<ApplicationUser>>();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using PrizeBondChecker.Domain;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,10 +19,10 @@ namespace Infrastructure.auth
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
-        public AuthService(IConfiguration Configuration, UserManager<ApplicationUser> userManager)
+        public AuthService(IConfiguration Configuration, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             _configuration = Configuration;
-            //_signInManager = signInManager;
+            _signInManager = signInManager;
             _userManager = userManager;
             //_roleManager = roleManager;
         }
@@ -75,7 +76,7 @@ namespace Infrastructure.auth
                 response.Message = "User already exists!";
                 return response;
             }
-            ApplicationUser user = new ApplicationUser()
+            ApplicationUser user = new()
             {
                 Email = request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
