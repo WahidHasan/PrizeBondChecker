@@ -78,10 +78,9 @@ namespace Infrastructure.auth
             }
             ApplicationUser user = new()
             {
-                Email = request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = request.Username,
-                PhoneNumber = request.PhoneNumber
+                //PhoneNumber = request.PhoneNumber
             };
             var result = await _userManager.CreateAsync(user, request.Password);
 
