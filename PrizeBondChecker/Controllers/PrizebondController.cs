@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PrizeBondChecker.Domain;
 using PrizeBondChecker.Domain.Prizebond;
 using PrizeBondChecker.Services;
 
@@ -18,7 +17,7 @@ namespace PrizeBondChecker.Controllers
         }
         // GET: api/<PrizebondController>
         [HttpGet]
-        public async Task<ActionResult<List<PrizeBond>>> Get()
+        public async Task<ActionResult<List<Prizebond>>> Get()
         {
             return await _prizebondService.GetAllAsync();
         }

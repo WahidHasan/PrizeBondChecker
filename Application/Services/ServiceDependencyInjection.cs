@@ -5,9 +5,12 @@ namespace PrizeBondChecker.Services
 {
     public static class ServiceDependencyInjection
     {
-        public static void AddServiceDependency(this IServiceCollection services)
+        public static IServiceCollection AddServiceDependency(this IServiceCollection services)
         {
+            //services.AddHostedService<SchedulerService>();
+            services.AddTransient<IPrizebondService, PrizebondService>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            return services;
         }
     }
 }

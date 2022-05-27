@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.User;
+using Infrastructure.auth;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +10,27 @@ namespace PrizeBondChecker.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        // GET: api/<AuthController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        private readonly IAuthService _authService;
 
-        // GET api/<AuthController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST api/<AuthController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        public AuthController(IAuthService authService)
         {
+            _authService = authService;
         }
 
-        // PUT api/<AuthController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+        [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult<Login>> Login(Login request)
+        {
+            return Ok(await _authService.LoginAsync(request));
+        }
 
-        //// DELETE api/<AuthController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+
+        [HttpPost]
+        [Route("register")]
+        public async Task<ActionResult<Register>> Register(Register request)
+        {
+            return Ok(await _authService.RegisterAsync(request));
+        }
+
     }
 }
