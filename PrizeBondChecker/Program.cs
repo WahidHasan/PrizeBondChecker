@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
-using PrizeBondChecker.Domain;
-using PrizeBondChecker.Models;
 using PrizeBondChecker.Services;
 
 var builder = WebApplication.CreateBuilder(args);

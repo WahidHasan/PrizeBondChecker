@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 using PrizeBondChecker.Domain.Prizebond;
-using PrizeBondChecker.Models;
 using System.Diagnostics;
 using static PrizeBondChecker.Domain.Enums.EnumPrizebond;
 
@@ -12,13 +11,13 @@ namespace PrizeBondChecker.Services
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IMongoCollection<Prizebond> _prizebond;
-        public SchedulerService(IPrizebondDbSettings settings)
-        {
-            //_serviceScopeFactory = serviceScopeFactory;
-            //var client = new MongoClient(settings.ConnectionString);
-            //var database = client.GetDatabase(settings.DatabaseName);
-            //_prizebond = database.GetCollection<PrizeBond>(settings.PrizebondCheckerCollectionName);
-        }
+        //public SchedulerService(IPrizebondDbSettings settings)
+        //{
+        //    //_serviceScopeFactory = serviceScopeFactory;
+        //    //var client = new MongoClient(settings.ConnectionString);
+        //    //var database = client.GetDatabase(settings.DatabaseName);
+        //    //_prizebond = database.GetCollection<PrizeBond>(settings.PrizebondCheckerCollectionName);
+        //}
 
 
 

@@ -1,5 +1,6 @@
 ﻿
 using Domain.User;
+using PrizeBondChecker.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Infrastructure.auth
     {
         Task<LoginResponse> LoginAsync(Login request);
         Task<RegisterResponse> RegisterAsync(Register request);
+        List<ApplicationUser> GetAllUsers();
     }
 }

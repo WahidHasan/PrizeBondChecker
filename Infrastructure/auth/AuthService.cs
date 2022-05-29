@@ -10,22 +10,26 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using PrizeBondChecker.Domain.Constants;
+using Domain.Exceptions;
 
 namespace Infrastructure.auth
 {
     public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
-        public AuthService(IConfiguration Configuration, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AuthService(IConfiguration Configuration, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             _configuration = Configuration;
             _signInManager = signInManager;
             _userManager = userManager;
-            //_roleManager = roleManager;
+            _roleManager = roleManager;
         }
+
         public async Task<LoginResponse> LoginAsync(Login request)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
@@ -46,12 +50,12 @@ namespace Infrastructure.auth
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
                 }
 
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
 
                 var token = new JwtSecurityToken(
-                    issuer: _configuration["JWT:ValidIssuer"],
-                    audience: _configuration["JWT:ValidAudience"],
-                    expires: DateTime.Now.AddHours(3),
+                    issuer: _configuration["Tokens:Issuer"],
+                    audience: _configuration["Tokens:Audience"],
+                    expires: DateTime.Now.AddHours(Convert.ToInt32(_configuration["Tokens:ValidityInHours"])),
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                     );
@@ -63,7 +67,11 @@ namespace Infrastructure.auth
 
                 return response;
             }
-            return null;
+            else
+            {
+                throw new AuthException(ApplicationMessages.InvalidUserNameOrPassword);
+            }
+            //return null;
         }
 
         public async Task<RegisterResponse> RegisterAsync(Register request)
@@ -80,7 +88,9 @@ namespace Infrastructure.auth
             {
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = request.Username,
-                //PhoneNumber = request.PhoneNumber
+                PhoneNumber = request.PhoneNumber,
+                Email = request.Email,
+                
             };
             var result = await _userManager.CreateAsync(user, request.Password);
 
@@ -103,5 +113,11 @@ namespace Infrastructure.auth
                 return response;
             }
         }
+
+        public  List<ApplicationUser> GetAllUsers()
+        {
+            return _userManager.Users.ToList();
+        }
+
     }
 }

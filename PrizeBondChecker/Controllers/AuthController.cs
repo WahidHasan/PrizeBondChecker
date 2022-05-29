@@ -17,6 +17,13 @@ namespace PrizeBondChecker.Controllers
             _authService = authService;
         }
 
+        [HttpGet]
+        [Route("getAllUsers")]
+        public ActionResult GetAllUsers()
+        {
+            return Ok( _authService.GetAllUsers());
+        }
+
         [HttpPost]
         [Route("login")]
         public async Task<ActionResult<Login>> Login(Login request)
