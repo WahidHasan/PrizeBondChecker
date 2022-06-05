@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.User
 {
-    public class ApplicationUserssss : MongoIdentityUser<Guid>
+    public class Usersssss : MongoIdentityUser<Guid>
     {
         public string Username { get; set; }
 

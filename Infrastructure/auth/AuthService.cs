@@ -13,21 +13,24 @@ using System.Threading.Tasks;
 using System.Data;
 using PrizeBondChecker.Domain.Constants;
 using Domain.Exceptions;
+using Infrastructure.Repository.Base;
 
 namespace Infrastructure.auth
 {
     public class AuthService : IAuthService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Users> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<Users> _signInManager;
         private readonly IConfiguration _configuration;
-        public AuthService(IConfiguration Configuration, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        private readonly IRepository<Users> _usersRepository;
+        public AuthService(IConfiguration Configuration, SignInManager<Users> signInManager, UserManager<Users> userManager, RoleManager<ApplicationRole> roleManager, IRepository<Users> usersRepository)
         {
             _configuration = Configuration;
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
+            _usersRepository = usersRepository;
         }
 
         public async Task<LoginResponse> LoginAsync(Login request)
@@ -84,7 +87,7 @@ namespace Infrastructure.auth
                 response.Message = "User already exists!";
                 return response;
             }
-            ApplicationUser user = new()
+            Users user = new()
             {
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = request.Username,
@@ -114,9 +117,9 @@ namespace Infrastructure.auth
             }
         }
 
-        public  List<ApplicationUser> GetAllUsers()
+        public async Task<List<Users>> GetAllUsers()
         {
-            return _userManager.Users.ToList();
+            return await _usersRepository.GetAllAsync();
         }
 
     }

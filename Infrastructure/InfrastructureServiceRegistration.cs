@@ -32,26 +32,26 @@ namespace Infrastructure
             var settings = configuration.GetSection("DbConnectionDetails").Get<MongoDbSettings>();
             services.AddSingleton<MongoDbSettings>(settings);
 
-            services.AddIdentityCore<ApplicationUser>().AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(
+            services.AddIdentityCore<Users>().AddMongoDbStores<Users, ApplicationRole, Guid>(
                            configuration["DbConnectionDetails:ConnectionString"],
                            configuration["DbConnectionDetails:DatabaseName"]
                        );
 
             services.AddHttpContextAccessor();
             // Identity services
-            //services.TryAddScoped<IUserValidator<ApplicationUser>, UserValidator<ApplicationUser>>();
-            //services.TryAddScoped<IPasswordValidator<ApplicationUser>, PasswordValidator<ApplicationUser>>();
-            //services.TryAddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
+            //services.TryAddScoped<IUserValidator<Users>, UserValidator<Users>>();
+            //services.TryAddScoped<IPasswordValidator<Users>, PasswordValidator<Users>>();
+            //services.TryAddScoped<IPasswordHasher<Users>, PasswordHasher<Users>>();
             //services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
             //services.TryAddScoped<IRoleValidator<ApplicationRole>, RoleValidator<ApplicationRole>>();
 
             //services.TryAddScoped<IdentityErrorDescriber>();
-            //services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<ApplicationUser>>();
-            //services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<ApplicationUser>>();
-            //services.TryAddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser, ApplicationRole>>();
+            //services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<Users>>();
+            //services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<Users>>();
+            //services.TryAddScoped<IUserClaimsPrincipalFactory<Users>, UserClaimsPrincipalFactory<Users, ApplicationRole>>();
 
-            services.TryAddScoped<UserManager<ApplicationUser>>();
-            services.TryAddScoped<SignInManager<ApplicationUser>>();
+            services.TryAddScoped<UserManager<Users>>();
+            services.TryAddScoped<SignInManager<Users>>();
             services.TryAddScoped<RoleManager<ApplicationRole>>();
             return services;
         }

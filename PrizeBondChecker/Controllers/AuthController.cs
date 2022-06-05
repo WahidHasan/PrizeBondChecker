@@ -1,6 +1,7 @@
 ﻿using Domain.User;
 using Infrastructure.auth;
 using Microsoft.AspNetCore.Mvc;
+using PrizeBondChecker.Domain;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,9 +20,9 @@ namespace PrizeBondChecker.Controllers
 
         [HttpGet]
         [Route("getAllUsers")]
-        public ActionResult GetAllUsers()
+        public async Task<ActionResult<List<Users>>> GetAllUsers()
         {
-            return Ok( _authService.GetAllUsers());
+            return Ok(await  _authService.GetAllUsers());
         }
 
         [HttpPost]

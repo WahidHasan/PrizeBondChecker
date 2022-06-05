@@ -13,8 +13,8 @@ builder.Services.AddInfrastructureService(builder.Configuration).AddMongoIdentit
 
 //builder.Services.Configure<PrizebondDbSettings>(builder.Configuration.GetSection(nameof(PrizebondDbSettings)));
 
-//builder.Services.AddIdentity<ApplicationUser, ApplicationRole>().
-//    AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(
+//builder.Services.AddIdentity<Users, ApplicationRole>().
+//    AddMongoDbStores<Users, ApplicationRole, Guid>(
 
 //    );
 

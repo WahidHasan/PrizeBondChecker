@@ -13,6 +13,6 @@ namespace Infrastructure.auth
     {
         Task<LoginResponse> LoginAsync(Login request);
         Task<RegisterResponse> RegisterAsync(Register request);
-        List<ApplicationUser> GetAllUsers();
+        Task<List<Users>> GetAllUsers();
     }
 }

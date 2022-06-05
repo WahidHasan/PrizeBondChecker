@@ -37,7 +37,7 @@ namespace Infrastructure.Repository.Base
 
         public IEnumerable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _collection.AsQueryable().ToEnumerable();
         }
 
         public virtual async Task<List<T>> GetAllAsync()
