@@ -8,6 +8,7 @@ using PrizeBondChecker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.TokenAuthentication(builder.Configuration);
 builder.Services.AddServiceDependency();
 builder.Services.AddInfrastructureService(builder.Configuration).AddMongoIdentity(builder.Configuration);
 
@@ -23,8 +24,6 @@ builder.Services.AddInfrastructureService(builder.Configuration).AddMongoIdentit
 
 
 // Add services to the container.
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddControllers();
 //builder.Services.AddScoped<IAuthService, AuthService>();

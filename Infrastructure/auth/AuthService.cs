@@ -122,5 +122,9 @@ namespace Infrastructure.auth
             return await _usersRepository.GetAllAsync();
         }
 
+        public async Task<Users> GetUserById(Guid userId)
+        {
+            return await _usersRepository.FindByIdAsync(userId);
+        }
     }
 }

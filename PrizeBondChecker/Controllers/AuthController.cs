@@ -1,5 +1,6 @@
 ﻿using Domain.User;
 using Infrastructure.auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PrizeBondChecker.Domain;
 
@@ -23,6 +24,14 @@ namespace PrizeBondChecker.Controllers
         public async Task<ActionResult<List<Users>>> GetAllUsers()
         {
             return Ok(await  _authService.GetAllUsers());
+        }
+
+        [HttpGet]
+        [Route("getUserById/{id}")]
+        [Authorize]
+        public async Task<ActionResult<Users>> GetUserById(Guid id)
+        {
+            return Ok(await _authService.GetUserById(id));
         }
 
         [HttpPost]

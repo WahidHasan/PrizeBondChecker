@@ -14,5 +14,6 @@ namespace Infrastructure.auth
         Task<LoginResponse> LoginAsync(Login request);
         Task<RegisterResponse> RegisterAsync(Register request);
         Task<List<Users>> GetAllUsers();
+        Task<Users> GetUserById(Guid userId);
     }
 }

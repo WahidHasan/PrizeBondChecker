@@ -30,9 +30,13 @@ namespace Infrastructure.Repository.Base
             throw new NotImplementedException();
         }
 
-        public Task<T> FindByIdAsync(Guid id)
+        public virtual Task<T> FindByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                var filter = Builders<T>.Filter.Eq(doc => doc.Id, id);
+                return _collection.Find(filter).SingleOrDefaultAsync();
+            });
         }
 
         public IEnumerable<T> GetAll()
