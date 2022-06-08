@@ -22,10 +22,14 @@ namespace PrizeBondChecker.Services
         {
             if (prizebond?.UserId != null)
             {
-                await _usersRepository.FindByIdAsync(prizebond.UserId);
-                var mappedData = _mapper.Map<Prizebond>(prizebond);
-                await _prizebondRepository.InsertOneAsync(mappedData);
-                return prizebond;
+                var userEntity = await _usersRepository.FindByIdAsync(prizebond.UserId);
+                if(userEntity != null)
+                {
+                    var mappedData = _mapper.Map<Prizebond>(prizebond);
+                    await _prizebondRepository.InsertOneAsync(mappedData);
+                    return prizebond;
+                }
+                return default;
             }
             return default;
         }
