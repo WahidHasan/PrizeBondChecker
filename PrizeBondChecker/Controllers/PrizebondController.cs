@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PrizeBondChecker.Domain.Prizebond;
 using PrizeBondChecker.Services;
 
@@ -31,8 +32,13 @@ namespace PrizeBondChecker.Controllers
 
         //// POST api/<PrizebondController>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post(PrizebondCreateModel prizeBond)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             await _prizebondService.AddBondToList(prizeBond);
             return Ok(prizeBond);
         }

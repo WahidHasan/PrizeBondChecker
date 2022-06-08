@@ -4,6 +4,7 @@ namespace PrizeBondChecker.Domain.Prizebond
 {
     public class PrizebondCreateModel
     {
+        public Guid UserId { get; set; }
         public string serial { get; set; }
 
         public string bondId { get; set; }
