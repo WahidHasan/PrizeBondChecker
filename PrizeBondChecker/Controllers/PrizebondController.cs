@@ -20,7 +20,7 @@ namespace PrizeBondChecker.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Prizebond>>> Get()
         {
-            return await _prizebondService.GetAllAsync();
+            return Ok(await _prizebondService.GetAllAsync());
         }
 
         // GET api/<PrizebondController>/5
