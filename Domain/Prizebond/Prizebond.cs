@@ -11,7 +11,6 @@ namespace PrizeBondChecker.Domain.Prizebond
         //[BsonId]
         //[BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         //public string? Id { get; set; }
-        public Guid UserId { get; set; }
         public string? serial { get; set; }
 
         public string? bondId { get; set; }

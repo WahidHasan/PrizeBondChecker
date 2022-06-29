@@ -60,5 +60,20 @@ namespace Infrastructure.Repository.Base
             document.CreatedDate = DateTime.UtcNow;
             await Task.Run(() => _collection.InsertOneAsync(document));
         }
+
+        public void InsertMany(ICollection<T> documents)
+        {
+            documents.First().CreatedBy = createdUserId;
+            documents.First().CreatedDate = DateTime.UtcNow;
+            _collection.InsertMany(documents);
+        }
+
+
+        public virtual async Task InsertManyAsync(ICollection<T> documents)
+        {
+            documents.First().CreatedBy = createdUserId;
+            documents.First().CreatedDate = DateTime.UtcNow;
+            await _collection.InsertManyAsync(documents);
+        }
     }
 }

@@ -15,8 +15,8 @@ namespace Infrastructure.Repository.Base
         Task<T> FindByIdAsync(Guid id);
         void InsertOne(T document);
         Task InsertOneAsync(T document);
-        //void InsertMany(ICollection<T> documents);
-        //Task InsertManyAsync(ICollection<T> documents);
+        void InsertMany(ICollection<T> documents);
+        Task InsertManyAsync(ICollection<T> documents);
         //void ReplaceOne(T document);
         //Task ReplaceOneAsync(T document);
         //void DeleteOne(T document);

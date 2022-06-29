@@ -1,14 +1,10 @@
-﻿using static PrizeBondChecker.Domain.Enums.EnumPrizebond;
+﻿using Domain.Prizebond;
 
 namespace PrizeBondChecker.Domain.Prizebond
 {
     public class PrizebondCreateModel
     {
         public Guid UserId { get; set; }
-        public string serial { get; set; }
-
-        public string bondId { get; set; }
-        public DateTime? entryDate { get; set; }
-        public CheckBond? Checked { get; set; }
+        public List<PrizebondViewModel> Prizebonds { get; set; }
     }
 }

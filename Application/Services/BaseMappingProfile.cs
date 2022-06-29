@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Prizebond;
 using PrizeBondChecker.Domain.Prizebond;
 
 namespace PrizeBondChecker.Services
@@ -7,7 +8,8 @@ namespace PrizeBondChecker.Services
     {
         public BaseMappingProfile()
         {
-            CreateMap<Prizebond, PrizebondCreateModel>().ReverseMap();   
+            CreateMap<Prizebond, PrizebondCreateModel>().ReverseMap();
+            CreateMap<Prizebond, PrizebondViewModel>().ReverseMap();
         }
 
     }
