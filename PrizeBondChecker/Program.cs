@@ -33,6 +33,8 @@ builder.Services.AddSwaggerExtension();
 //builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.ConfigureExceptionHandler();
+app.ConfigureCustomExceptionMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

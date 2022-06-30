@@ -1,8 +1,11 @@
-﻿using AutoMapper;
+﻿using Application.Shared.Models;
+using AutoMapper;
 using Domain.Prizebond;
 using Infrastructure.Repository.Base;
 using PrizeBondChecker.Domain;
+using PrizeBondChecker.Domain.Constants;
 using PrizeBondChecker.Domain.Prizebond;
+using System.Net;
 
 namespace PrizeBondChecker.Services
 {
@@ -26,33 +29,33 @@ namespace PrizeBondChecker.Services
             if (prizebond?.UserId != null)
             {
                 var userEntity = await _usersRepository.FindByIdAsync(prizebond.UserId);
-                if (userEntity != null)
+                if (userEntity == null)
+                    throw new Exception(ApplicationMessages.UserNotFound);
+
+                var mappedData = _mapper.Map<List<Prizebond>>(prizebond.Prizebonds);
+                await _prizebondRepository.InsertManyAsync(mappedData);
+
+                var userPrizebonds = new List<UserPrizebonds>();
+                foreach (var bond in mappedData)
                 {
-                    var mappedData = _mapper.Map<List<Prizebond>>(prizebond.Prizebonds);
-                    await _prizebondRepository.InsertManyAsync(mappedData);
-
-                    var userPrizebonds = new List<UserPrizebonds>();
-                    foreach (var bond in mappedData)
+                    userPrizebonds.Add(new UserPrizebonds
                     {
-                        userPrizebonds.Add(new UserPrizebonds
-                        {
-                            PrizebondId = bond.Id,
-                            UserId = prizebond.UserId
-                        });
+                        PrizebondId = bond.Id,
+                        UserId = prizebond.UserId
+                    });
 
-                    }
-
-                    await _userPrizebondsRepository.InsertManyAsync(userPrizebonds);
-                    return prizebond;
                 }
-                return default;
+
+                await _userPrizebondsRepository.InsertManyAsync(userPrizebonds);
+               return prizebond;
+
             }
             return default;
+            
         }
 
         public async Task<List<Prizebond>> GetAllAsync()
         {
-
             return await _prizebondRepository.GetAllAsync();
         }
     }

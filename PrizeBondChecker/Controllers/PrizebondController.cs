@@ -20,7 +20,8 @@ namespace PrizeBondChecker.Controllers
         [HttpGet("GetAllPrizebonds")]
         public async Task<ActionResult<List<Prizebond>>> GetAllPrizebond()
         {
-            return await _prizebondService.GetAllAsync();
+            var response = await _prizebondService.GetAllAsync();
+            return Ok(response);
         }
 
         // GET api/<PrizebondController>/5
@@ -34,12 +35,8 @@ namespace PrizeBondChecker.Controllers
         [Authorize]
         public async Task<IActionResult> AddPrizebond(PrizebondCreateModel prizeBond)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _prizebondService.AddBondToList(prizeBond);
-            return Ok(prizeBond);
+            var response = await _prizebondService.AddBondToList(prizeBond);
+            return Ok(response);
         }
 
         //// PUT api/<PrizebondController>/5
