@@ -58,5 +58,30 @@ namespace PrizeBondChecker.Services
         {
             return await _prizebondRepository.GetAllAsync();
         }
+
+        public async Task<CommonApiResponses> Delete(PrizebondDeleteModel prizebond)
+        {
+            var userEntity = await _usersRepository.FindByIdAsync(prizebond.UserId);
+            if (userEntity == null)
+                throw new Exception(ApplicationMessages.UserNotFound);
+
+            var selectedPrizebonds = new List<Prizebond>();
+            foreach (var pId in prizebond.BondIds)
+            {
+                var bond = await _prizebondRepository.FindOneAsync(x => x.bondId == pId);
+                var userPrizebondEntity = await _userPrizebondsRepository.FindOneAsync(x => x.PrizebondId == bond.Id);
+                await _userPrizebondsRepository.DeleteOneAsync(userPrizebondEntity);
+                selectedPrizebonds.Add(bond);
+            }
+            await _prizebondRepository.DeleteManyAsync(selectedPrizebonds);
+            return new CommonApiResponses()
+            {
+                IsSuccess = true,
+                StatusCode = (int)HttpStatusCode.Accepted,
+                StatusDetails = ApplicationMessages.HttpStatusCodeDescriptionAccepted,
+                Message = ApplicationMessages.DataDeletedSuccessfull,
+                Data = null
+            };
+        }
     }
 }

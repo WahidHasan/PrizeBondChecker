@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Prizebond;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PrizeBondChecker.Domain.Prizebond;
 using PrizeBondChecker.Services;
@@ -45,10 +46,12 @@ namespace PrizeBondChecker.Controllers
         //{
         //}
 
-        //// DELETE api/<PrizebondController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        // DELETE api/<PrizebondController>/5
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete(PrizebondDeleteModel prizeBond)
+        {
+            var response = await _prizebondService.Delete(prizeBond);
+            return Ok(response);
+        }
     }
 }
