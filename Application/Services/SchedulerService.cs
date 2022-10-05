@@ -9,8 +9,8 @@ namespace PrizeBondChecker.Services
 {
     public class SchedulerService : BackgroundService
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IMongoCollection<Prizebond> _prizebond;
+        //private readonly IServiceScopeFactory _serviceScopeFactory;
+        //private readonly IMongoCollection<Prizebond> _prizebond;
         //public SchedulerService(IPrizebondDbSettings settings)
         //{
         //    //_serviceScopeFactory = serviceScopeFactory;

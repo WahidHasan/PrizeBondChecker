@@ -12,6 +12,10 @@ namespace Infrastructure.Repository.Base
     {
         IEnumerable<T> GetAll();
         Task<List<T>> GetAllAsync();
+        IEnumerable<T> FilterBy(
+        Expression<Func<T, bool>> filterExpression);
+        Task<List<T>> FilterByAsync(
+          Expression<Func<T, bool>> filterExpression);
         T FindById(Guid id);
         Task<T> FindByIdAsync(Guid id);
         T FindOne(Expression<Func<T, bool>> filterExpression);

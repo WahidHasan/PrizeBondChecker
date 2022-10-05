@@ -1,4 +1,5 @@
-﻿using Domain.Prizebond;
+﻿using Application.Models.PrizebondView;
+using Domain.Prizebond;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PrizeBondChecker.Domain.Prizebond;
@@ -17,19 +18,12 @@ namespace PrizeBondChecker.Controllers
         {
             this._prizebondService = (PrizebondService?)prizebondService;
         }
-        // GET: api/<PrizebondController>
-        [HttpGet("GetAllPrizebonds")]
-        public async Task<ActionResult<List<Prizebond>>> GetAllPrizebond()
-        {
-            var response = await _prizebondService.GetAllAsync();
-            return Ok(response);
-        }
 
-        // GET api/<PrizebondController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
+        //[HttpGet("GetAllPrizebonds")]
+        //public async Task<ActionResult<List<Prizebond>>> GetAllPrizebond()
         //{
-        //    return "value";
+        //    var response = await _prizebondService.GetAllAsync();
+        //    return Ok(response);
         //}
 
         [HttpPost("AddPrizebonds")]
@@ -40,13 +34,14 @@ namespace PrizeBondChecker.Controllers
             return Ok(response);
         }
 
-        //// PUT api/<PrizebondController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+        [HttpPost("GetByUserId")]
+        [Authorize]
+        public async Task<IActionResult> GetByUserId(PrizebondRequestQuery query)
+        {
+            var response = await _prizebondService.GetByUserIdAsync(query);
+            return Ok(response);
+        }
 
-        // DELETE api/<PrizebondController>/5
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(PrizebondDeleteModel prizeBond)
         {

@@ -40,6 +40,18 @@ namespace Infrastructure.Repository.Base
             });
         }
 
+        public virtual IEnumerable<T> FilterBy(
+      Expression<Func<T, bool>> filterExpression)
+        {
+            return _collection.Find(filterExpression).ToEnumerable();
+        }
+
+        public virtual async Task<List<T>> FilterByAsync(
+          Expression<Func<T, bool>> filterExpression)
+        {
+            return await _collection.Find(filterExpression).ToListAsync();
+        }
+
         public virtual T FindOne(Expression<Func<T, bool>> filterExpression)
         {
             return _collection.Find(filterExpression).FirstOrDefault();

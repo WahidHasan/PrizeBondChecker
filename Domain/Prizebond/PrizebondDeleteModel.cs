@@ -8,7 +8,11 @@ namespace Domain.Prizebond
 {
     public class PrizebondDeleteModel
     {
+        public PrizebondDeleteModel()
+        {
+            BondIds = new();
+        }
         public Guid UserId { get; set; }
-        public List<string> BondIds { get; set; }
+        public List<Guid> BondIds { get; set; }
     }
 }

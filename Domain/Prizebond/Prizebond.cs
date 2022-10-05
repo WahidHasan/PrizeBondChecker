@@ -14,6 +14,7 @@ namespace PrizeBondChecker.Domain.Prizebond
         public string? serial { get; set; }
 
         public string? bondId { get; set; }
+        public string? bondIdInBengali { get; set; }
         public DateTime? entryDate { get; set; }
         public CheckBond? Checked { get; set; }
     }
