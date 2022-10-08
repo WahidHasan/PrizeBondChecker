@@ -1,11 +1,14 @@
-﻿using Application.Models.PrizebondView;
+﻿using Application.Models.DownloadTemplate;
+using Application.Models.PrizebondView;
 using Application.Shared.Models;
 using AutoMapper;
 using Domain.Prizebond;
 using Infrastructure.Repository.Base;
+using OfficeOpenXml;
 using PrizeBondChecker.Domain;
 using PrizeBondChecker.Domain.Constants;
 using PrizeBondChecker.Domain.Prizebond;
+using System.ComponentModel;
 using System.Net;
 
 namespace PrizeBondChecker.Services
@@ -98,6 +101,39 @@ namespace PrizeBondChecker.Services
                 Message = ApplicationMessages.DataDeletedSuccessfull,
                 Data = null
             };
+        }
+
+        public async Task<MemoryStream> DownloadPrizebondTemplate()
+        {
+            var stream = new MemoryStream();
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            using(var xlPackage = new ExcelPackage(stream))
+            {
+                #region For Upload Template
+                var pbworksheet = xlPackage.Workbook.Worksheets.Add("Prizebonds");
+                pbworksheet.Columns.Style.Numberformat.Format = "@";
+                int row = 1, column = 1;
+
+                var properties = TypeDescriptor.GetProperties(typeof(DownloadTemplateViewModel));
+                foreach (PropertyDescriptor property in properties)
+                {
+                    pbworksheet.Cells[row, column].Value = property.DisplayName;
+                    pbworksheet.Cells[row, column].Style.Font.Bold = true;
+
+                    pbworksheet.Column(column).Width = 19;
+                    column++;
+                }
+
+                xlPackage.Workbook.Properties.Title = "Prizebonds";
+
+                #endregion
+
+                xlPackage.Save();
+                stream.Position = 0;
+            }
+
+            return stream;
         }
     }
 }

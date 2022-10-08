@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PrizeBondChecker.Domain.Prizebond;
 using PrizeBondChecker.Services;
+using System.IO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -47,6 +48,15 @@ namespace PrizeBondChecker.Controllers
         {
             var response = await _prizebondService.Delete(prizeBond);
             return Ok(response);
+        }
+
+        [HttpGet("DownloadTemplate")]
+        [Authorize]
+        public async Task<IActionResult> DownloadPrizebondTemplate()
+        {
+            var stream = await _prizebondService.DownloadPrizebondTemplate();
+            string templateName = "PrizebondUploadTemplate";
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", templateName);
         }
     }
 }
