@@ -1,4 +1,5 @@
 ﻿using Application.Models.DownloadTemplate;
+using Application.Models.Draw;
 using Application.Models.PrizebondView;
 using Application.Shared.Models;
 using AutoMapper;
@@ -134,6 +135,11 @@ namespace PrizeBondChecker.Services
             }
 
             return stream;
+        }
+
+        public async Task<CommonApiResponses> AddNewDraw(AddNewDrawCommand request)
+        {
+            return new CommonApiResponses(true, (int)HttpStatusCode.OK, ApplicationMessages.HttpStatusCodeDescriptionOk, ApplicationMessages.DataRetriveSuccessfull, null);
         }
     }
 }
