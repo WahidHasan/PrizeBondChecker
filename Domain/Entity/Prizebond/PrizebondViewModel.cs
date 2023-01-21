@@ -9,8 +9,8 @@ namespace Domain.Prizebond
 {
     public class PrizebondViewModel
     {
-        public string? Serial { get; set; }
-        public string? BondId { get; set; }
+        public string Serial { get; set; } = string.Empty;
+        public string BondId { get; set; } = string.Empty;
         public string? BondIdInBengali { get; set; }
         public DateTime? EntryDate { get; set; }
         public CheckBond? Checked { get; set; }

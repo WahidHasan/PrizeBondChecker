@@ -5,11 +5,13 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrizeBondChecker", "PrizeBondChecker\PrizeBondChecker.csproj", "{61F1B4B4-8954-4F1C-BEE0-5F1486C8A597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{5DEE2703-54B3-47B2-946F-F1333C55DEA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{5DEE2703-54B3-47B2-946F-F1333C55DEA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{2E625224-14A8-4F57-96E5-D56B65BAAF10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{2E625224-14A8-4F57-96E5-D56B65BAAF10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{DFDADA94-9CB4-44A4-8109-8FFC4D9CA560}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{DFDADA94-9CB4-44A4-8109-8FFC4D9CA560}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrizeBondCheckerTests", "PrizeBondCheckerTests\PrizeBondCheckerTests.csproj", "{C74BC676-47C7-4DEA-9353-D9E799647D2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{DFDADA94-9CB4-44A4-8109-8FFC4D9CA560}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFDADA94-9CB4-44A4-8109-8FFC4D9CA560}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFDADA94-9CB4-44A4-8109-8FFC4D9CA560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C74BC676-47C7-4DEA-9353-D9E799647D2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74BC676-47C7-4DEA-9353-D9E799647D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C74BC676-47C7-4DEA-9353-D9E799647D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C74BC676-47C7-4DEA-9353-D9E799647D2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
