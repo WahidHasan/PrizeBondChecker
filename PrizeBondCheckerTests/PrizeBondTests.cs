@@ -1,4 +1,8 @@
 using Application.Models.TestModel;
+using Autofac.Extras.Moq;
+using Domain.Prizebond;
+using Infrastructure.Repository.Base;
+using Moq;
 using PrizeBondChecker.Services;
 using Shouldly;
 
@@ -6,11 +10,32 @@ namespace PrizeBondCheckerTests
 {
     public class Tests
     {
-        private PrizebondService _prizebondService;
-        [SetUp]
+        private AutoMock _mock;   
+        private BondManagement _bondManagement;
+        private Mock<IRepository<UserPrizebonds>> _dbContextMock;
+        [OneTimeSetUp]  // run once for all setup
+        public void OneTimeSetUp()
+        {
+            _mock = AutoMock.GetLoose();
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            _mock?.Dispose();
+        }
+
+        [SetUp] // Run each time before test run
         public void Setup()
         {
-            //_prizebondService = prizebondService;
+            _dbContextMock = _mock.Mock<IRepository<UserPrizebonds>>();
+            _bondManagement = _mock.Create<BondManagement>(); //create actual instances
+        }
+
+        [TearDown]
+        public void Cleanup()
+        {
+            _dbContextMock?.Reset(); // Dispose mock objects
         }
 
         //[Test]
@@ -28,15 +53,14 @@ namespace PrizeBondCheckerTests
         {
             // Arrange
             var bondId = 102101;
-            //var title = string.Empty;
             var collectionDate = new DateTime(2022, 01, 10);
 
             // Act
-            var bondManagement = new BondManagement();
             Should.Throw<InvalidOperationException>(() =>
-                bondManagement.AddBond(bondId, title, collectionDate));
+                _bondManagement.AddBond(bondId, title, collectionDate));
         }
 
+        [Test]
         public void CreateBond_ValidBondValues_CreateBond()
         {
             // Arrange
@@ -45,9 +69,26 @@ namespace PrizeBondCheckerTests
             var collectionDate = new DateTime(2022, 01, 10);
 
             // Act
-            var bondManagement = new BondManagement();
- 
-            bondManagement.AddBond(bondId, title, collectionDate);
+            _bondManagement.AddBond(bondId, title, collectionDate);
+        }
+
+        [Test]
+        public void CreateActualBond_ValidBondValues_CreateActualBond()
+        {
+            // Arrange
+            var bondId = "102101";
+            var serial = "BD";
+            var userId = new Guid();
+
+            // create dynamic implementation on the fly
+            _dbContextMock.Setup(x=> x.InsertOne(It.Is<UserPrizebonds>(y=> y.UserId == userId
+             && y.BondId == bondId && y.Serial == serial))).Verifiable();
+
+            // Act
+            _bondManagement.AddActualBond(bondId, serial, userId);
+
+            // Assert
+            _dbContextMock.Verify();
         }
     }
 }
