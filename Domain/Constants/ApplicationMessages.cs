@@ -14,5 +14,6 @@
         public const string DataCreatedSuccessfull = "Data has been created successfully.";
         public const string DataUpdatedSuccessfull = "Data has been updated successfully.";
         public const string DataDeletedSuccessfull = "Data has been deleted successfully.";
+        public const string DataAddedSuccessfull = "Data has been added successfully.";
     }
 }

@@ -140,7 +140,7 @@ namespace PrizeBondChecker.Services
 
         public async Task<CommonApiResponses> AddNewDraw(AddNewDrawCommand request)
         {
-            return new CommonApiResponses(true, (int)HttpStatusCode.OK, ApplicationMessages.HttpStatusCodeDescriptionOk, ApplicationMessages.DataRetriveSuccessfull, null);
+            return new CommonApiResponses(true, (int)HttpStatusCode.OK, ApplicationMessages.HttpStatusCodeDescriptionOk, ApplicationMessages.DataAddedSuccessfull, null);
         }
     }
 }
