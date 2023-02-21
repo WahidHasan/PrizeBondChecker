@@ -90,7 +90,8 @@ namespace PrizeBondChecker.Services
             {
                 //var bond = await _prizebondRepository.FindOneAsync(x => x.bondId == pId);
                 var userPrizebondEntity = await _userPrizebondsRepository.FindOneAsync(x => x.Id == pId);
-                await _userPrizebondsRepository.DeleteOneAsync(userPrizebondEntity);
+                if(userPrizebondEntity != null)
+                    await _userPrizebondsRepository.DeleteOneAsync(userPrizebondEntity);
                 //selectedPrizebonds.Add(bond);
             }
             //await _prizebondRepository.DeleteManyAsync(selectedPrizebonds);
