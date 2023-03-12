@@ -9,7 +9,7 @@ namespace Domain.Entity.Draws
 {
     public class SelectedBond
     {
-        public Guid BondId { get; set; }
+        public string BondId { get; set; }
         public PrizeCategory PrizeCategory { get; set; }
     }
 }

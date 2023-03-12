@@ -10,6 +10,9 @@
         public const string UserNotFound = "User not found.";
         public const string InvalidUserNameOrPassword = "Username or password is invalid.";
 
+        public const string DrawNumberExist = "Same draw number already exist";
+        public const string DrawMonthYearExist = "Same month year already exist";
+
         public const string DataRetriveSuccessfull = "Data has been retrived successfully.";
         public const string DataCreatedSuccessfull = "Data has been created successfully.";
         public const string DataUpdatedSuccessfull = "Data has been updated successfully.";
