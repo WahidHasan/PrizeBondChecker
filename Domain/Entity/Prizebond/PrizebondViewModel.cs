@@ -14,5 +14,6 @@ namespace Domain.Prizebond
         public string? BondIdInBengali { get; set; }
         public DateTime? EntryDate { get; set; }
         public CheckBond? Checked { get; set; }
+        public string? Notes { get; set; }
     }
 }

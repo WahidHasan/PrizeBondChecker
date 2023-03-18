@@ -50,19 +50,14 @@ namespace PrizeBondChecker.Services
                 //var mappedData = _mapper.Map<List<Prizebond>>(prizebond.Prizebonds);
                 //await _prizebondRepository.InsertManyAsync(mappedData);
 
-                var userPrizebonds = new List<UserPrizebonds>();
-                foreach (var bond in prizebond.Prizebonds)
+                var userPrizebonds = prizebond.Prizebonds.Select(bond => new UserPrizebonds
                 {
-                    userPrizebonds.Add(new UserPrizebonds
-                    {
-                        //PrizebondId = bond.Id,
-                        UserId = prizebond.UserId,
-                        BondId = bond.BondId,
-                        Serial = bond.Serial,
-                        BondIdInBengali = bond?.BondIdInBengali
-                    });
-
-                }
+                    UserId = prizebond.UserId,
+                    BondId = bond.BondId!,
+                    Serial = bond.Serial!,
+                    BondIdInBengali = bond?.BondIdInBengali,
+                    Notes = bond?.Notes,
+                }).ToList();
 
                 await _userPrizebondsRepository.InsertManyAsync(userPrizebonds);
                 return prizebond;
