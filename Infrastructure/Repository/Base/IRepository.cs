@@ -1,4 +1,5 @@
 ﻿using Domain;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Infrastructure.Repository.Base
 {
     public interface IRepository<T> where T : IBaseEntity
     {
+        IMongoCollection<T> Collection { get; }
         IEnumerable<T> GetAll();
         Task<List<T>> GetAllAsync();
         IEnumerable<T> FilterBy(

@@ -1,4 +1,5 @@
-﻿using Application.Models.DownloadTemplate;
+﻿using Application.Models.CheckBond;
+using Application.Models.DownloadTemplate;
 using Application.Models.Draw;
 using Application.Models.PrizebondView;
 using Application.Shared.Helpers;
@@ -11,6 +12,7 @@ using Infrastructure.Repository.Base;
 using IronOcr;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using MongoDB.Driver;
 using OfficeOpenXml;
 using PrizeBondChecker.Domain;
 using PrizeBondChecker.Domain.Constants;
@@ -285,5 +287,50 @@ namespace PrizeBondChecker.Services
             await formFile.CopyToAsync(memoryStream);
             return memoryStream.ToArray();
         }
+
+        public async Task<CommonApiResponses> CheckUserBondsWithDraw(CheckUserBondsListCommand request)
+        {
+            var drawInfo = await _drawsRepository.FindOneAsync(x => x.DrawNumber == request.DrawNumber);
+            if (drawInfo == null)
+                throw new Exception(ApplicationMessages.DrawNumberNotFound);
+            var drawBondIds = drawInfo.SelectedBonds.Select(bn => bn.BondId);
+            var userBondIds = _userPrizebondsRepository.Collection.AsQueryable()
+                .Where(x => x.UserId == request.UserId && drawBondIds.Contains(x.BondIdInBengali))
+                .Select(y => new MatchedBondViewModel
+                {
+                    BondId = y.BondId,
+                    BondIdInBengali = y.BondIdInBengali,
+                    Serial = y.Serial,
+                    Notes = y.Notes
+                }).ToList();
+
+            foreach(var bond in userBondIds)
+            {
+                bond.PrizeCategory = drawInfo.SelectedBonds.Find(p => p.BondId == bond.BondIdInBengali).PrizeCategory!;
+            }
+                        
+            return new CommonApiResponses(true, (int)HttpStatusCode.OK, ApplicationMessages.HttpStatusCodeDescriptionOk, ApplicationMessages.DataAddedSuccessfull, userBondIds);
+        }
     }
 }
+
+
+//  Need to replace above foreach by below chunk of code
+
+//var result = await _userPrizebondsRepository.Collection.Aggregate()
+//    .Lookup(
+//        foreignCollection: _drawsRepository.Collection,
+//        localField: u => u.BondIdInBengali,
+//        foreignField: d => d.SelectedBonds.Select(b => b.BondId),
+//        @as: (MatchedBondViewModel u) => u.SelectedBonds
+//    )
+//    .Unwind(u => u.SelectedBonds)
+//    .Project(u => new MatchedBondViewModel
+//    {
+//        BondId = u.BondId,
+//        BondIdInBengali = u.BondIdInBengali,
+//        Serial = u.Serial,
+//        Notes = u.Notes,
+//        PrizeCategory = u.SelectedBonds.PrizeCategory
+//    })
+//    .ToListAsync();

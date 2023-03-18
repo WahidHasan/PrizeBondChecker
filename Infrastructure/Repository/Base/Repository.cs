@@ -16,6 +16,7 @@ namespace Infrastructure.Repository.Base
         protected readonly IDbContext _mongoContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         protected IMongoCollection<T> _collection;
+        public IMongoCollection<T> Collection => _collection;
         private Guid createdUserId;
 
         public Repository(IDbContext context, IHttpContextAccessor httpContextAccessor)

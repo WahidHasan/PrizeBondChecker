@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Prizebond
+namespace Application.Models.CheckBond
 {
-    public class UserPrizebonds : BaseEntity
+    public class MatchedBondViewModel
     {
-        public Guid UserId { get; set; }
-        //public Guid PrizebondId { get; set; }
         public string Serial { get; set; }
         public string BondId { get; set; }
         public string? BondIdInBengali { get; set; }
-        public string? Notes { get; set; }
+        public PrizeCategory PrizeCategory { get; set; }
+        public string Notes { get; set; }
     }
 }

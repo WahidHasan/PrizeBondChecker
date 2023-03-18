@@ -1,4 +1,5 @@
-﻿using Application.Models.Draw;
+﻿using Application.Models.CheckBond;
+using Application.Models.Draw;
 using Application.Models.PrizebondView;
 using Domain.Prizebond;
 using Microsoft.AspNetCore.Authorization;
@@ -77,6 +78,21 @@ namespace PrizeBondChecker.Controllers
             var response = await _prizebondService.AddNewDraw(prizeBond);
             return Ok(response);
         }
+
         [HttpPost("CheckUserBondsWithDraw")]
+        [Authorize]
+        public async Task<IActionResult> CheckUserBondsWithDraw(CheckUserBondsListCommand command)
+        {
+            var response = await _prizebondService.CheckUserBondsWithDraw(command);
+            return Ok(response);
+        }
+
+        [HttpPost("CheckWithAllClaimableDraw")]
+        [Authorize]
+        public async Task<IActionResult> CheckWithAllClaimableDraw([FromForm] AddNewDrawCommand prizeBond)
+        {
+            var response = await _prizebondService.AddNewDraw(prizeBond);
+            return Ok(response);
+        }
     }
 }
