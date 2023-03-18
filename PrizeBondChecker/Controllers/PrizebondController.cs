@@ -77,5 +77,6 @@ namespace PrizeBondChecker.Controllers
             var response = await _prizebondService.AddNewDraw(prizeBond);
             return Ok(response);
         }
+        [HttpPost("CheckUserBondsWithDraw")]
     }
 }
