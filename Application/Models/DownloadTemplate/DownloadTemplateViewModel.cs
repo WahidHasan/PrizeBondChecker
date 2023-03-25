@@ -10,9 +10,12 @@ namespace Application.Models.DownloadTemplate
     public class DownloadTemplateViewModel
     {
         [DisplayName("Serial No")]
-        public string Serial { get; set; }
+        public string Serial { get; set; } = string.Empty;
 
-        [DisplayName("Bond Id")]
-        public Guid BondId { get; set; }
+        [DisplayName("Bond Id In Bengali")]
+        public string BondIdInBengali { get; set; } = string.Empty;
+
+        [DisplayName("Notes")]
+        public Guid Notes { get; set; }
     }
 }

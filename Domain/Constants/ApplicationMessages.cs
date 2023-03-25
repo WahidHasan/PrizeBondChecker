@@ -13,6 +13,7 @@
         public const string DrawNumberExist = "Same draw number already exist";
         public const string DrawMonthYearExist = "Same month year already exist";
         public const string DrawNumberNotFound = "Draw number not found";
+        public const string NoPrizebondMatch = "No prizebond match with draw!!!";
 
         public const string DataRetriveSuccessfull = "Data has been retrived successfully.";
         public const string DataCreatedSuccessfull = "Data has been created successfully.";

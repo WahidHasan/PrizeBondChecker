@@ -1,6 +1,7 @@
 ﻿using Application.Models.CheckBond;
 using Application.Models.Draw;
 using Application.Models.PrizebondView;
+using Application.Models.UploadPrizebondList;
 using Domain.Prizebond;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,13 +54,21 @@ namespace PrizeBondChecker.Controllers
             return Ok(response);
         }
 
-        [HttpGet("DownloadTemplate")]
+        [HttpGet("DownloadPrizebondUploadTemplate")]
         [Authorize]
         public async Task<IActionResult> DownloadPrizebondTemplate()
         {
             var stream = await _prizebondService.DownloadPrizebondTemplate();
             string templateName = "PrizebondUploadTemplate";
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", templateName);
+        }
+
+        [HttpPost("UploadPrizebondList")]
+        [Authorize]
+        public async Task<IActionResult> UploadPrizebondList([FromForm] UploadPrizebondListCommand command)
+        {
+            var response = await _prizebondService.UploadPrizebondList(command);
+            return Ok(response);
         }
 
         [HttpPost("DownloadDrawExcelFile")]

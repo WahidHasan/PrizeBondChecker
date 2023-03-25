@@ -2,6 +2,7 @@
 using Application.Models.DownloadTemplate;
 using Application.Models.Draw;
 using Application.Models.PrizebondView;
+using Application.Models.UploadPrizebondList;
 using Application.Shared.Helpers;
 using Application.Shared.Models;
 using AutoMapper;
@@ -141,6 +142,105 @@ namespace PrizeBondChecker.Services
             }
 
             return stream;
+        }
+
+        public async Task<CommonApiResponses> UploadPrizebondList(UploadPrizebondListCommand request)
+        {
+            //bondId must be 7 chars lond, id must be bengali
+            var userBonds = await _userPrizebondsRepository.FilterByAsync(x => x.UserId == request.UserId);
+            var stream = request.File.OpenReadStream();
+            var memoryStream = new MemoryStream();
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            var errors = new List<ImportErrorViewModel>();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var worksheet = package.Workbook.Worksheets.First();
+                var rowCount = worksheet.Dimension.Rows;
+                var columnCount = worksheet.Dimension.Columns;
+
+                var prizeBondList = new List<UserPrizebonds>();
+                for(var row = 2; row <= rowCount; row++)
+                {
+                    var serialNo = CommonHelper.ToTrimmedString(worksheet.Cells[row, 1].Value);
+                    var bondIdInBengali = CommonHelper.ToTrimmedString(worksheet.Cells[row, 2].Value);
+                    var Note = CommonHelper.ToTrimmedString(worksheet.Cells[row, 3].Value);
+
+                    if(serialNo != "" && bondIdInBengali != "")
+                    {
+                        prizeBondList.Add(new()
+                        {
+                            UserId = request.UserId,
+                            BondId = bondIdInBengali,
+                            BondIdInBengali = bondIdInBengali,
+                            Serial = serialNo,
+                            Notes = Note
+                        });
+                    }
+                    else if(serialNo == "" || bondIdInBengali == "")
+                    {
+                        errors.Add(new ImportErrorViewModel
+                        {
+                            Row = row,
+                            Description = $"Serial No or BondId cannot be empty"
+                        });
+                    }
+                    else if (bondIdInBengali?.Trim().Length != 7)
+                    {
+                        errors.Add(new ImportErrorViewModel
+                        {
+                            Row = row,
+                            Description = $"BondId must be 7 characters long"
+                        });
+                    }
+                    else if(isBondIdExistInDatabase(userBonds, bondIdInBengali) || isBondIdExistInCurrentFile(prizeBondList, bondIdInBengali))
+                    {
+                        errors.Add(new ImportErrorViewModel
+                        {
+                            Row = row,
+                            Description = $"BondId already exist"
+                        });
+                    }
+                }
+
+                await _userPrizebondsRepository.InsertManyAsync(prizeBondList);
+            }
+            return new CommonApiResponses(true, (int)HttpStatusCode.OK, ApplicationMessages.HttpStatusCodeDescriptionOk, ApplicationMessages.DataAddedSuccessfull, null);
+        }
+
+        private MemoryStream ExportErrorLogs(List<ImportErrorViewModel> errors)
+        {
+            var stream = new MemoryStream();
+
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            using var xlPackage = new ExcelPackage(stream);
+            var catWorkSheet = xlPackage.Workbook.Worksheets.Add("ErrorLogs");
+            xlPackage.Workbook.Properties.Title = "ErrorLogs";
+
+            var catRow = 1;
+            foreach (var error in errors)
+            {
+                catWorkSheet.Cells[catRow, 1].Value = $"Row position: {error.Row}";
+                catWorkSheet.Cells[catRow, 2].Value = error.Description;
+                catRow++;
+            }
+
+            xlPackage.Save();
+            stream.Position = 0;
+            return stream;
+        }
+
+        private bool isBondIdExistInDatabase(List<UserPrizebonds> userPrizebonds, string bondIdInBengali)
+        {
+            var bond = userPrizebonds.Any(x=> x.BondIdInBengali == bondIdInBengali);
+            return bond;
+        }
+
+        private bool isBondIdExistInCurrentFile(List<UserPrizebonds> currentFileBonds, string bondIdInBengali)
+        {
+            var bond = currentFileBonds.Any(x => x.BondIdInBengali == bondIdInBengali);
+            return bond;
         }
 
         public async Task<MemoryStream> DownloadDrawExcelFile(DownloadDrawExcelCommand request)
@@ -304,7 +404,7 @@ namespace PrizeBondChecker.Services
                 bond.PrizeCategory = drawInfo.SelectedBonds.Find(p => p.BondId == bond.BondIdInBengali).PrizeCategory!;
             }
                         
-            return new CommonApiResponses(true, (int)HttpStatusCode.OK, ApplicationMessages.HttpStatusCodeDescriptionOk, ApplicationMessages.DataAddedSuccessfull, userBondIds);
+            return new CommonApiResponses(true, (int)HttpStatusCode.OK, ApplicationMessages.HttpStatusCodeDescriptionOk, userBondIds.Count > 0 ? ApplicationMessages.DataRetriveSuccessfull : ApplicationMessages.NoPrizebondMatch, userBondIds);
         }
     }
 }
