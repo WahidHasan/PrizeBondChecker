@@ -9,7 +9,6 @@ namespace Application.Models.Draw
 {
     public class DownloadDrawExcelCommand
     {
-        public DateTime DrawDate { get; set; }
         public int DrawNumber { get; set; }
         public IFormFile Image { get; set; }
     }
