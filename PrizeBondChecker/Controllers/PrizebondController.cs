@@ -76,7 +76,7 @@ namespace PrizeBondChecker.Controllers
         public async Task<IActionResult> DownloadDrawExcelFile([FromForm] DownloadDrawExcelCommand command)
         {
             var stream = await _prizebondService.DownloadDrawExcelFile(command);
-            string templateName = "DrawUploadTemplate";
+            string templateName = $"{command.DrawNumber}_DrawUploadTemplate";
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", templateName);
         }
 
